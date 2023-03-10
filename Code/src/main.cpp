@@ -56,7 +56,7 @@ float globalDistance = 0.0;
 //Declaramos las funciones para luego utilizarlas
 void setup();
 void loop();
-void LineFollower();
+void LineFollower(); //Seguidor de Linea
 void BytesReceived(); //Comandos del carro
 void ObjectDetector(); //Detecta los objetos cercanos al carro
 
@@ -167,6 +167,49 @@ void ObjectDetector(){
 //=====================================================================================================
 
 void LineFollower(){
+int firstDelayTime = 20;
+int secondDelayTime = 25;
+
+/*Vamos a tomar la informacion tomada por los sensores 
+  de los cuales existen 3 escenarios para el carro*/
+
+//1. Ninguno en Linea
+if((globalRightSensorOutputValue == 0) && (globalLeftSensorOutputValue == 0)){
+
+  //Configuramos los motores para este caso
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,HIGH);
+  delay(firstDelayTime);
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,LOW);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,LOW);
+  delay(firstDelayTime);
+
+}
+
+//2. El infrarrojo derecho y hay que corregir girando a la derecha
+if((globalRightSensorOutputValue == 0) && (globalLeftSensorOutputValue == 1)){
+  
+  //Configuramos los motores para este caso
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,LOW);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,LOW);
+  delay(secondDelayTime);
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,LOW);
+  delay(firstDelayTime);
+
+}
+//3. El infrarrojo izquierdo y hay que corregir girando a la izquierda
+if((globalRightSensorOutputValue == 1) && (globalLeftSensorOutputValue == 0)){
+  
+  //Configuramos los motores para este caso
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,LOW);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,LOW);
+  delay(secondDelayTime);
+  digitalWrite(PIN_MOTOR_RIGHT_FWD,LOW);
+  digitalWrite(PIN_MOTOR_LEFT_BWD,HIGH);
+  delay(firstDelayTime);
+
+}
 
 
 }
