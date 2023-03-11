@@ -17,7 +17,7 @@
 #include "Ultrasonic.h" //Libreria creada para activar al sensor de ultrasonido
 #include "Motor.h" //Libreria creado especialmente para los motores 
 #include "Servo.h" //Libreria creada para el control del servomotor en este proyecto en especifico
-#include "InfraredSensor.h" //Libreria creado especificamente para el funcionamiento de los sensores para el seguidor de linea
+#include "InfraredSensor.h" //Libreria creada para el funcionamiento de los sensores para el seguidor de linea
 #include "CLI.h" //Libreria creada para la modalidad del robot
 
 
@@ -59,6 +59,7 @@ void loop();
 void LineFollower(); //Seguidor de Linea
 void BytesReceived(); //Comandos del carro
 void ObjectDetector(); //Detecta los objetos cercanos al carro
+void ObstacleAvoidance(); //Esquiva obstaculos
 
 
 /***************************************************************************************************************
@@ -81,7 +82,7 @@ Serial.begin(115200);
 void loop(){
     
   if(Serial.available()> 0){  //Si hay comunicacion de datos 
-    
+    ControlAccions();
   }
 
 
@@ -210,6 +211,11 @@ if((globalRightSensorOutputValue == 1) && (globalLeftSensorOutputValue == 0)){
   delay(firstDelayTime);
 
 }
+}
+//=====================================================================================================
+
+void ObstacleAvoidance(){
+
 
 
 }
