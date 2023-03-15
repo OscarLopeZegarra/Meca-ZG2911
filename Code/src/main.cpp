@@ -43,8 +43,6 @@ enum Comands{
  *  						                  						  GLOBAL VARIABLES
  **************************************************************************************************************/
 
-
-
 //Variables para el control del sensor de ultrasionido
 int globalObjectDetectionRange = 15;
 int globalDelayValue = 600;
@@ -59,7 +57,7 @@ void loop();
 void LineFollower(); //Seguidor de Linea
 void BytesReceived(); //Comandos del carro
 void ObjectDetector(); //Detecta los objetos cercanos al carro
-void ObstacleAvoidance(); //Esquiva obstaculos
+
 
 
 /***************************************************************************************************************
@@ -72,6 +70,7 @@ void setup(){
  InitializationUltrasonic();
  InitializationMotor();
  InitializationInfraredSensor();
+ ControlAccions();
 
 //Activacion del monitor serial para poder colocar los comandos
 Serial.begin(115200);
@@ -80,9 +79,27 @@ Serial.begin(115200);
 //=====================================================================================================
 
 void loop(){
-    
+
   if(Serial.available()> 0){  //Si hay comunicacion de datos 
-    ControlAccions();
+    switch (globalInputOpcion)
+    {
+    case 1:
+      LineFollower();
+      break;
+    case 2:
+     ObjectDetector();
+     break;
+    case 3:
+      /* code */
+      break;
+    case 4:
+      /* code */
+      break;
+    default:
+
+      break;
+    }
+
   }
 
 
@@ -152,6 +169,10 @@ void ObjectDetector(){
     delay(globalDelayValue); //Un pequenio retraso para que pueda realizar sus procesos tranquilo
     globalServoReadLeft = MeasuringDistance();
 
+    //El servo mirara recto 
+    myServo.write(globalServoInitialPosicion);
+    delay(globalDelayValue); //Un pequenio retraso para que pueda realizar sus procesos tranquilo
+
     //En automatico el coche girara a la izquierda, esquivando el obstaculo
     if(globalServoReadLeft > globalServoReadRight){
       Serial.println("Giro hacia la izquierda");
@@ -159,10 +180,16 @@ void ObjectDetector(){
     }
 
     //En automatico el coche girara a la izquierda, esquivando el obstaculo
-    if(globalServoReadRight > globalServoReadLeft){
+    if(globalServoReadRight >= globalServoReadLeft){
       Serial.println("Giro hacia la derecha");
       TurnRightCar(); 
     }
+  }
+
+  if(globalDistance > globalObjectDetectionRange){
+    //Va a avanzar recto
+    Serial.println("Va todo recto");
+    TurnForwardCar();
   }
 }
 //=====================================================================================================
@@ -214,8 +241,3 @@ if((globalRightSensorOutputValue == 1) && (globalLeftSensorOutputValue == 0)){
 }
 //=====================================================================================================
 
-void ObstacleAvoidance(){
-
-
-
-}

@@ -2,9 +2,10 @@
 #define CLI_h
 #include <Arduino.h>
 
-int ControlAccions(){
-  int opcion = 0;
-  
+int globalInputOpcion = 0;
+
+void ControlAccions(){
+
   Serial.println("Enter the number that accompanies the robot's modality: ");
   Serial.println("1.Line follower ");
   Serial.println("2.avoid obstacles");
@@ -13,9 +14,8 @@ int ControlAccions(){
   while(Serial.available() == 0){
     //Se deja en blanco porque no va a ejecutar nada para esperar a que el usuario digite
   }
-  opcion = Serial.parseInt();
+  globalInputOpcion = Serial.parseInt();
 
-  return opcion;
 }
 
 
