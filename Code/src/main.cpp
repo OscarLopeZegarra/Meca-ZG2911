@@ -57,6 +57,7 @@ void loop();
 void LineFollower(); //Seguidor de Linea
 void BytesReceived(); //Comandos del carro
 void ObjectDetector(); //Detecta los objetos cercanos al carro
+void FollowerOfObjects(); //Sigue objetos mientras se muevan
 
 
 
@@ -241,3 +242,18 @@ if((globalRightSensorOutputValue == 1) && (globalLeftSensorOutputValue == 0)){
 }
 //=====================================================================================================
 
+void FollowerOfObjects(){
+  globalDistance = MeasuringDistance();
+
+  if(globalDistance <= 10){
+    TurnBackwardCar();
+  }
+  if(((globalDistance > 10) && (globalDistance <= 15)) || (globalDistance > 30)){
+    StopCar();
+  }
+  if((globalDistance > 15) && (globalDistance <= 30)){
+    TurnForwardCar();
+  }
+
+
+}
